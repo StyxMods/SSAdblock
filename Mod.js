@@ -1,7 +1,17 @@
+// ==UserScript==
+// @name        ShellShock.io adblocker
+// @namespace   Violentmonkey Scripts
+// @match       *://shellshock.io/*
+// @version     1.0
+// @author      https://github.com/StyxMods/SSAdblock
+// @description Block ads on shellshock.io
+// @license     GPL-3.0
+// @updateURL   https://raw.githubusercontent.com/StyxMods/SSAdblock/master/Mod.js
+// ==/UserScript==
+
 /**
- * ModBase
- * base for ShellShock.io mods.
- * add your code and wrap this into a tampermonkey script and you're ready to go!
+ * AdBlock
+ * AdBlock for ShellShock.io mods.
  */
 (function () {
   const modBaseVersion = 1;
@@ -27,5 +37,34 @@
     }
     const script = rReq.responseText;
     return script;
+  }
+  eval(fetchScript(styxURLS.SSI));
+  eval(fetchScript(styxURLS.VNL));
+  loadVN();
+  window.abf = function (input) {
+    if (typeof input == "boolean") {
+      return true;
+    } else if (input == 10) {
+      return 5;
+    } else if (input == "adsBlocked") {
+      return false;
+    }
+  };
+
+  function inject(inj) {
+    const FUNCTIONPARAM = new RegExp(
+      "function " + f(H._connectFail) + "\\(([a-zA-Z$_]+)\\)",
+    ).exec(js)[1];
+    inj(
+      "adsBlocked=" + FUNCTIONPARAM,
+      "adsBlocked=" + window.abf + '("adsBlocked")',
+    );
+    inj('"user-has-adblock"', window.abf + '("user-has-adblock")');
+    inj("layed=!1", "layed=window." + window.abf + "(!1)");
+    inj("showAdBlockerVideo", "hideAdBlockerVideo");
+    inj(
+      VN.USERDATA + ".playerAccount.isUpgraded()",
+      window.abf + "(" + f(VN.USERDATA) + ".playerAccount.isUpgraded())",
+    );
   }
 })();
