@@ -4,12 +4,12 @@
  * add your code and wrap this into a tampermonkey script and you're ready to go!
  */
 (function () {
-  const modBaseVersion = 1;
+  const modBaseVersion = 2;
   const styxURLS = {
     SSI: "https://raw.githubusercontent.com/Char0nStyx/SSI/master/SSI.js",
     VNL: "https://raw.githubusercontent.com/Char0nStyx/VNL/master/VNL.js",
   };
-  console.log(`using ModBase version ${modBaseVersion}.`);
+  console.log(`using ModBase version ${modBaseVersion}`);
   /**
    * fetches text from a remote URL. Use the return result of this
    * with eval to import a script.
