@@ -41,6 +41,8 @@
   eval(fetchScript(styxURLS.SSI));
   eval(fetchScript(styxURLS.VNL));
   loadVN();
+  const VN = getVN();
+  runInjector();
   window.abf = function (input) {
     if (typeof input == "boolean") {
       return true;
@@ -51,20 +53,24 @@
     }
   };
 
-  function inject(inj) {
+  function inject(inj, js) {
     const FUNCTIONPARAM = new RegExp(
-      "function " + f(H._connectFail) + "\\(([a-zA-Z$_]+)\\)",
+      "function " + VN._connectFail.replace("$", "\\$") + "\\(([a-zA-Z$_]+)\\)",
     ).exec(js)[1];
     inj(
       "adsBlocked=" + FUNCTIONPARAM,
-      "adsBlocked=" + window.abf + '("adsBlocked")',
+      "adsBlocked=" + "window.abf" + '("adsBlocked")',
     );
-    inj('"user-has-adblock"', window.abf + '("user-has-adblock")');
-    inj("layed=!1", "layed=window." + window.abf + "(!1)");
+    inj('"user-has-adblock"', "window.abf" + '("user-has-adblock")');
+    inj("layed=!1", "layed=window." + "window.abf" + "(!1)");
     inj("showAdBlockerVideo", "hideAdBlockerVideo");
     inj(
       VN.USERDATA + ".playerAccount.isUpgraded()",
-      window.abf + "(" + f(VN.USERDATA) + ".playerAccount.isUpgraded())",
+      "window.abf" +
+        "(" +
+        VN.USERDATA.replace("$", "\\$") +
+        ".playerAccount.isUpgraded())",
     );
   }
 })();
+
