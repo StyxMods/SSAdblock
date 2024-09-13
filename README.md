@@ -1,2 +1,2 @@
-# ModBase
-Base for ShellShock.io mods.
+# SSAdblock
+Block ads in the game ShellShock.io
